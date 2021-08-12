@@ -13,6 +13,8 @@ create table if not exists users
 alter table users
     owner to postgres;
 
+alter table users alter column blog set default false;
+
 create unique index if not exists users_user_id_uindex
 	on users (user_id);
 
