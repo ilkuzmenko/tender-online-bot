@@ -1,7 +1,13 @@
-from aiogram.dispatcher.filters import Text
+from aiogram.dispatcher.filters import Text, Command
 from aiogram.types import Message
 from data.text_const import low_help, analytics_help
+from keyboards.default import partners
 from loader import dp
+
+
+@dp.message_handler(Command("partners"))
+async def partners_command(message: Message):
+    await message.answer("Виберіть, будь ласка, зі списку", reply_markup=partners)
 
 
 @dp.message_handler(Text(equals=["⚖️ Правова підтримка"]))
