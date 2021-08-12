@@ -1,11 +1,17 @@
-from aiogram.dispatcher.filters import Text
+from aiogram.dispatcher.filters import Text, Command
 from aiogram.types import Message
+from keyboards.default import faq
 from loader import dp
 from data.text_const import btnFAQ1_text, btnFAQ2_text, btnFAQ3_text, btnFAQ4_text, btnFAQ5_text, \
     btnFAQ6_text, btnFAQ7_text, btnFAQ8_text, btnFAQ9_text, btnFAQ10_text, \
     btnFAQ11_text, btnFAQ12_text, btnFAQ13_text, btnFAQ14_text, btnFAQ15_text, \
     btnFAQ16_text, btnFAQ17_text, btnFAQ18_text, btnFAQ19_text, btnFAQ20_text, \
     btnFAQ21_text, btnFAQ22_text, btnFAQ23_text, btnFAQ24_text, btnFAQ25_text, btnFAQ26_text
+
+
+@dp.message_handler(Command("faq"))
+async def faq_command(message: Message):
+    await message.answer("Виберіть, будь ласка, зі списку", reply_markup=faq)
 
 
 @dp.message_handler(Text(equals=["Чим відрізняються Допорогові/Спрощені закупівлі від Відкритих торгів?"]))
