@@ -1,18 +1,23 @@
-from aiogram.dispatcher.filters import Text
+from aiogram.dispatcher.filters import Text, Command
 from aiogram.types import Message
-from keyboards.default import menu, faq, tariff, partners
+from keyboards.default import menu, faq, tariff, partners, blog
 from data.text_const import chef_answer, about_prozorro
 from loader import dp
 
 
-@dp.message_handler(Text(equals=["🔙 Головне меню"]))
-async def main_menu(message: Message):
+@dp.message_handler(Command("menu"))
+async def help_command(message: Message):
     await message.answer("Виберіть, будь ласка, зі списку", reply_markup=menu)
 
 
-@dp.message_handler(Text(equals=["📎 Підписатися"]))
+@dp.message_handler(Text(equals=["🔙 Головне меню"]))
+async def back_to_menu(message: Message):
+    await message.answer("Виберіть, будь ласка, зі списку", reply_markup=menu)
+
+
+@dp.message_handler(Text(equals=["📎 Блог"]))
 async def subscribe(message: Message):
-    await message.answer("Функціонал в розробці")
+    await message.answer("Виберіть, будь ласка, зі списку", reply_markup=blog)
 
 
 @dp.message_handler(Text(equals=["🔎 Пошук"]))
