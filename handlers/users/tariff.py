@@ -1,7 +1,13 @@
-from aiogram.dispatcher.filters import Text
+from aiogram.dispatcher.filters import Text, Command
 from aiogram.types import Message
 from data.text_const import tariff_prozorro, tariff_prozorro_market
+from keyboards.default import tariff
 from loader import dp
+
+
+@dp.message_handler(Command("tariff"))
+async def partners_command(message: Message):
+    await message.answer("Виберіть, будь ласка, зі списку", reply_markup=tariff)
 
 
 @dp.message_handler(Text(equals=["🔵 Prozorro"]))
