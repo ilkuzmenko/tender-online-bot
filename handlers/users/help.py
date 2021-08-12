@@ -4,5 +4,5 @@ from loader import dp
 
 
 @dp.message_handler(Command("help"))
-async def main_menu(message: Message):
+async def help_command(message: Message):
     await message.answer("help command")
