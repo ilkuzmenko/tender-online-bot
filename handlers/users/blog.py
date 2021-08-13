@@ -6,8 +6,8 @@ from utils.db.comands import subscribe_user, get_blog_page
 
 @dp.message_handler(Text(equals=["📩 Отримати новини"]))
 async def btn_get_blog(message: Message):
-    blog = await get_blog_page()
-    await message.answer(blog, parse_mode='HTML')
+    blog_page = await get_blog_page()
+    await message.answer(blog_page, parse_mode='HTML')
 
 
 @dp.message_handler(Text(equals=["✅Підписатися/❌Відписатися"]))
