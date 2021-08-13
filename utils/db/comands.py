@@ -17,11 +17,11 @@ async def subscribe_user(status, user_id):
 
 
 async def get_blog_page():
-    blog_table = await db.fetch('''SELECT id, title, link, date_post FROM blog''')
-    i = 1
-    out = '<b>Останні записи нашого блогу:</b>\n\n'
-    while i <= 5:
-        out += f"⠀{i}. {blog_table[i]['title']} " \
+    blog_table = await db.fetch('''SELECT id, title, link, date_post FROM blog ORDER BY date_post DESC ''')
+    i = 0
+    out = '<b>📩 Останні записи нашого блогу:</b>\n\n'
+    while i < 5:
+        out += f"⠀{i + 1}. {blog_table[i]['title']} " \
                f"<a href = \"{blog_table[i]['link']}\"> " + "➡️" + " </a>\n" \
                f"<i>{str(blog_table[i]['date_post'])}</i>\n\n"
         i += 1
