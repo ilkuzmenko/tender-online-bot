@@ -1,6 +1,6 @@
 import asyncio
 
-from loader import bot, create_db
+from loader import bot, create_user_db, create_blog_db
 from config import ADMIN_ID
 
 
@@ -10,7 +10,8 @@ async def on_shutdown(dp):
 
 async def on_startup(dp):
     await asyncio.sleep(5)
-    await create_db()
+    await create_user_db()
+    await create_blog_db()
     await bot.send_message(ADMIN_ID, "Bot on startup")
 
 
