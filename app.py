@@ -7,12 +7,12 @@ from utils.web_scrapper.BlogScrapper import blog_to_db
 
 
 async def on_startup(dp):
-    start_time = time.time()
-    await blog_to_db(1)
-    print("--- %s seconds ---" % (time.time() - start_time))
     await asyncio.sleep(5)
     await create_user_db()
     await create_blog_db()
+    start_time = time.time()
+    await blog_to_db(1)
+    print("--- %s seconds ---" % (time.time() - start_time))
     await bot.send_message(ADMIN, "Bot on startup")
 
 

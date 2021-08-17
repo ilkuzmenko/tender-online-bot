@@ -10,3 +10,6 @@ create table if not exists blog
 
 alter table blog
     owner to postgres;
+
+create unique index blog_link_uindex
+	on blog (link);
