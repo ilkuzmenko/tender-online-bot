@@ -6,7 +6,7 @@ from loader import dp
 
 
 @dp.message_handler(Command("menu"))
-async def help_command(message: Message):
+async def menu_command(message: Message):
     await message.answer("Виберіть, будь ласка, зі списку", reply_markup=menu)
 
 
