@@ -1,19 +1,24 @@
 import asyncio
 import time
 
-from loader import bot, create_user_db, create_blog_db
+from loader import bot
 from config import ADMIN
+from utils.db.Database import Database
 from utils.web_scrapper.BlogScrapper import blog_to_db
 
 
 async def on_startup(dp):
     await asyncio.sleep(5)
-    await create_user_db()
-    await create_blog_db()
+
+    db = Database()
+    await db.connect()
+    await db.create_table("user_table")
+    await db.create_table("blog_table")
+
     start_time = time.time()
     await blog_to_db(1)
-    print("--- %s seconds ---" % (time.time() - start_time))
     await bot.send_message(ADMIN, "Bot on startup")
+    print("--- %s seconds ---" % (time.time() - start_time))
 
 
 if __name__ == '__main__':
