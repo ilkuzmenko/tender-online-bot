@@ -9,7 +9,7 @@ blog = ReplyKeyboardMarkup(
             KeyboardButton(text="📩 Отримати новини"),
         ],
         [
-            KeyboardButton(text="✅Підписатися/❌Відписатися")
+            KeyboardButton(text="✅ Підписатися/❌ Відписатися")
         ],
     ],
     resize_keyboard=True
