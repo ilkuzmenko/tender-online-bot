@@ -7,7 +7,8 @@ create table if not exists users
 	phone bigint,
 	first_name text,
 	last_name text,
-	blog boolean
+	blog boolean,
+	reg_date date
 );
 
 alter table users

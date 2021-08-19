@@ -1,20 +1,21 @@
-import datetime
 import logging
 import math
 
+from datetime import datetime
 from loader import db
 
 
 async def add_user(user_id, phone, first_n, last_n):
-    await db.pool.execute("INSERT INTO users (user_id, phone, first_name, last_name)"
-                          "VALUES ($1, $2, $3, $4) ON CONFLICT DO NOTHING", user_id, phone, first_n, last_n)
+    await db.pool.execute("INSERT INTO users (user_id, phone, first_name, last_name, reg_date)"
+                          "VALUES ($1, $2, $3, $4, $5) ON CONFLICT DO NOTHING",
+                          user_id, phone, first_n, last_n, datetime.today())
     logging.info("User " + str(user_id) + " added to table")
 
 
 async def add_blog(title, link, date_post):
     await db.pool.execute("INSERT INTO blog (title, link, date_post)"
                           "VALUES ($1, $2, $3) ON CONFLICT DO NOTHING", title, link,
-                          datetime.datetime.strptime(date_post, '%d.%m.%Y'))
+                          datetime.strptime(date_post, '%d.%m.%Y'))
 
 
 async def subscribe_user(status, user_id):
