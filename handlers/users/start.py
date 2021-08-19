@@ -14,7 +14,7 @@ async def phone(message: Message):
                              "щоб почати користуватися ботом.".format(message.from_user),
                              reply_markup=share_contact)
     else:
-        logging.info("User " + str(message.from_user.id) + " log in bot.")
+        logging.info("User " + str(message.from_user.id) + " logged in bot.")
         await message.answer("Раді Вас бачити!", reply_markup=menu)
 
 
@@ -23,5 +23,5 @@ async def contact(message):
     if message.contact is not None:
         await add_user(message.from_user.id, int(message.contact.phone_number),
                        message.contact.first_name, message.contact.last_name)
-        logging.info("User " + str(message.from_user.id) + " sign up bot.")
+        logging.info("User " + str(message.from_user.id) + " signed in bot.")
         await message.answer("Виберіть, будь ласка, зі списку", reply_markup=menu)

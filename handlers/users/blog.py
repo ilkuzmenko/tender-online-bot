@@ -8,8 +8,6 @@ from keyboards.inline import blog
 from loader import dp, db
 from utils.db.comands import get_blog_page, subscribe_user
 
-logging.basicConfig(format=u'%(filename)s [LINE:%(lineno)d] #%(levelname)-8s [%(asctime)s]  %(message)s',
-                    level=logging.INFO)
 
 user_data = {}
 
@@ -19,7 +17,6 @@ async def btn_get_blog(message: Message):
     user_data[message.from_user.id] = 0
     blog_page = await get_blog_page(0)
     await message.answer(blog_page, parse_mode='HTML', reply_markup=blog)
-    logging.info("btn_get_blog")
 
 
 async def update_text(message: Message, new_value: int):
@@ -27,14 +24,13 @@ async def update_text(message: Message, new_value: int):
     try:
         await message.edit_text(blog_page, parse_mode='HTML', reply_markup=blog)
     except MessageTextIsEmpty:
-        logging.info("MessageTextIsEmpty")
+        logging.info("Blog MessageTextIsEmpty")
     except MessageNotModified:
-        logging.info("MessageNotModified")
+        logging.info("Blog MessageNotModified")
 
 
 @dp.callback_query_handler(Text(startswith="num_"))
 async def callbacks_num(call: CallbackQuery):
-    logging.info("pre callbacks")
     first_page = user_data.get(call.from_user.id, 0)
     action = call.data.split("_")[1]
 

@@ -52,9 +52,7 @@ async def fill_blog_table():
                 date_post.append('01.01.1991')
 
     blogs = list(zip(title, link, date_post))
-    logging.info("Ziped blogs")
 
     for column_value in blogs:
-        logging.info("Adding " + str(column_value))
+        logging.info("Add " + str(column_value))
         await add_blog(column_value[0], column_value[1], column_value[2])
-        logging.info("Complete")
