@@ -24,24 +24,22 @@ async def subscribe_user(status, user_id):
 async def get_blog_page(page: int):
 
     blog_table = await db.pool.fetch("SELECT id, title, link, date_post FROM blog ORDER BY date_post DESC")
-    out = '<b>📩 Останні записи нашого блогу:</b>\n\n'
+    out = '<b>📩 Блог:</b>\n\n'
     logging.info("Pages " + str(page))
 
-    if page == 1:
+    if page == 0:
         first_elem = 0
         last_elem = 5
-    elif 1 < page <= math.ceil((len(blog_table) / 5)):
-        counter = (page - 1) * 5
+    elif 0 < page <= math.ceil((len(blog_table) / 5)):
+        counter = page * 5
         first_elem = 0 + counter
         last_elem = 5 + counter
     else:
-        logging.info("Last page")
         return
 
-    for blog_dict in blog_table[first_elem:last_elem]:
-        out += f"{blog_dict['title']} " \
+    for i, blog_dict in enumerate(blog_table[first_elem:last_elem]):
+        out += f"{i + 1 + (page * 5)}. {blog_dict['title']} " \
                f"<a href = \"{blog_dict['link']}\"> " + "➡️" + " </a>\n" \
                f"<i>{str(blog_dict['date_post'])}</i>\n\n"
 
     return out
-
