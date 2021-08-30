@@ -3,6 +3,11 @@ import math
 
 from datetime import datetime
 from loader import db
+from utils.web_scrapper.BlogScrapper import fill_blog_table
+
+
+logging.basicConfig(format=u'%(filename)s [LINE:%(lineno)d] #%(levelname)-8s [%(asctime)s]  %(message)s',
+                    level=logging.INFO)
 
 
 async def add_user(user_id, phone, first_n, last_n):
@@ -10,12 +15,6 @@ async def add_user(user_id, phone, first_n, last_n):
                           "VALUES ($1, $2, $3, $4) ON CONFLICT DO NOTHING",
                           user_id, phone, first_n, last_n)
     logging.info("User " + str(user_id) + " added to table")
-
-
-async def add_blog(title, link, date_post):
-    await db.pool.execute("INSERT INTO blog (title, link, date_post)"
-                          "VALUES ($1, $2, $3) ON CONFLICT DO NOTHING", title, link,
-                          datetime.strptime(date_post, '%d.%m.%Y'))
 
 
 async def subscribe_user(status, user_id):
@@ -51,4 +50,14 @@ async def get_users():
 
 
 async def get_new_blog():
-    return "blog_message"
+    await db.pool.execute("DROP TABLE blog")
+    await db.create_table("blog_table")
+    await fill_blog_table()
+
+    blog_table = await db.pool.fetch("SELECT title, link, date_post FROM blog WHERE id = 1")
+
+    for blog in blog_table:
+        if str(blog['date_post']) == datetime.today().strftime('%Y-%m-%d'):
+            logging.info("New post " + blog['link'])
+            return f"{blog['title']} " \
+                   f"<a href = \"{blog['link']}\"> " + "➡️" + " </a>\n"
