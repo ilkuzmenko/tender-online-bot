@@ -8,7 +8,8 @@ create table if not exists users
 	first_name text,
 	last_name text,
 	blog boolean,
-	reg_date date
+	reg_date date default current_date,
+    reg_time time default current_time
 );
 
 alter table users
