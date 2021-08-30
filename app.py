@@ -17,9 +17,6 @@ async def on_startup(dp):
     db = Database()
 
     await db.connect()
-    await db.pool.execute("DROP TABLE users")
-    await db.pool.execute("DROP TABLE blog")
-    await asyncio.sleep(5)
     await db.create_table("user_table")
     await db.create_table("blog_table")
 
