@@ -1,8 +1,9 @@
 import logging
 import requests
 
+from datetime import datetime
 from bs4 import BeautifulSoup
-from utils.db.comands import add_blog
+from loader import db
 
 logging.basicConfig(format=u'%(filename)s [LINE:%(lineno)d] #%(levelname)-8s [%(asctime)s]  %(message)s',
                     level=logging.INFO)
@@ -55,4 +56,6 @@ async def fill_blog_table():
 
     for column_value in blogs:
         logging.info("Add " + str(column_value))
-        await add_blog(column_value[0], column_value[1], column_value[2])
+        await db.pool.execute("INSERT INTO blog (title, link, date_post)"
+                              "VALUES ($1, $2, $3) ON CONFLICT DO NOTHING", column_value[0], column_value[1],
+                              datetime.strptime(column_value[2], '%d.%m.%Y'))
