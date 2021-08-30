@@ -3,3 +3,4 @@ aiogram==2.14.3
 asyncpg~=0.24.0
 requests~=2.25.1
 beautifulsoup4~=4.9.3
+aioschedule~=0.5.2
