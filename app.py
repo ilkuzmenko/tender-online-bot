@@ -16,15 +16,19 @@ async def on_startup(dp):
     asyncio.create_task(scheduler())
     db = Database()
 
-    await asyncio.sleep(0)
-
     await db.connect()
+    await db.pool.execute("DROP TABLE users")
+    await db.pool.execute("DROP TABLE blog")
+    await asyncio.sleep(5)
     await db.create_table("user_table")
     await db.create_table("blog_table")
 
     await fill_blog_table()
 
-    await message_to_all("Оновлення 1->20152.\nМи оновили функціонал, напишіть /start, щоб  оновлення вступили в силу.")
+    await message_to_all(f"Оновлення 1->20152🚀\n"
+                         f"Ми оновили функціонал, натисніть /start, щоб оновлення вступили в силу.\n\n"
+                         f"• Тепер, якщо Ви підпишетеся на наш блог, тудете отримувати повідомлення про новий запис.\n"
+                         f"• Виправлено проблеми з реєстрацією деяких користувачів.")
 
     await message_to_admins("Bot on startup")
 
