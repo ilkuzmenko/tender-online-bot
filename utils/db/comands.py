@@ -6,9 +6,9 @@ from loader import db
 
 
 async def add_user(user_id, phone, first_n, last_n):
-    await db.pool.execute("INSERT INTO users (user_id, phone, first_name, last_name, reg_date)"
-                          "VALUES ($1, $2, $3, $4, $5) ON CONFLICT DO NOTHING",
-                          user_id, phone, first_n, last_n, datetime.today())
+    await db.pool.execute("INSERT INTO users (user_id, phone, first_name, last_name)"
+                          "VALUES ($1, $2, $3, $4) ON CONFLICT DO NOTHING",
+                          user_id, phone, first_n, last_n)
     logging.info("User " + str(user_id) + " added to table")
 
 
@@ -23,7 +23,6 @@ async def subscribe_user(status, user_id):
 
 
 async def get_blog_page(page: int):
-
     blog_table = await db.pool.fetch("SELECT id, title, link, date_post FROM blog ORDER BY date_post DESC")
     out = '<b>📩 Блог:</b>\n\n'
     logging.info("Pages " + str(page))
@@ -44,3 +43,12 @@ async def get_blog_page(page: int):
                f"<i>{str(blog_dict['date_post'])}</i>\n\n"
 
     return out
+
+
+async def get_users():
+    user_table = await db.pool.fetch("SELECT * FROM users")
+    return user_table
+
+
+async def get_new_blog():
+    return "blog_message"
