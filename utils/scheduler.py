@@ -16,7 +16,7 @@ async def blog_message_schedule():
 
 async def scheduler():
     logging.info("Init scheduler")
-    aioschedule.every().day.at("13:00").do(blog_message_schedule)
+    aioschedule.every().day.at("10:00").do(blog_message_schedule)
     while True:
         await aioschedule.run_pending()
         await asyncio.sleep(1)
