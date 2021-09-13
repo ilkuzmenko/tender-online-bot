@@ -16,7 +16,7 @@ async def message_to_all(message_text):
         users_table = await get_users()
 
         for user in users_table:
-            await bot.send_message(user['user_id'], message_text)
+            await bot.send_message(user['user_id'], message_text, parse_mode='HTML')
 
         logging.info("Messages to all sent --- %s seconds ---" % (time.time() - start_time))
 
@@ -27,7 +27,7 @@ async def message_to_admins(message_text):
         admins_list = ADMINS.split(", ")
 
         for admin in range(len(admins_list)):
-            await bot.send_message(admins_list[admin], message_text)
+            await bot.send_message(admins_list[admin], message_text, parse_mode='HTML')
 
         logging.info("Messages to admins sent --- %s seconds ---" % (time.time() - start_time))
 
@@ -39,6 +39,6 @@ async def message_to_subscribers(message_text):
 
         for user in users_table:
             if user['blog']:
-                await bot.send_message(user['user_id'], message_text)
+                await bot.send_message(user['user_id'], message_text, parse_mode='HTML')
 
         logging.info("Messages to all sent --- %s seconds ---" % (time.time() - start_time))
