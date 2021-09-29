@@ -4,7 +4,7 @@ menu = ReplyKeyboardMarkup(
     keyboard=[
         [
             KeyboardButton(text="🔎 Пошук"),
-            KeyboardButton(text="📎 Блог")
+            KeyboardButton(text="📎 Новини")
         ],
         [
             KeyboardButton(text="🆘 FAQ"),
