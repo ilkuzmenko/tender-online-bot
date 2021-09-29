@@ -14,7 +14,7 @@ async def back_to_menu(message: Message):
     await message.answer("Виберіть, будь ласка, зі списку", reply_markup=menu)
 
 
-@dp.message_handler(Text(equals=["📎 Блог"]))
+@dp.message_handler(Text(equals=["📎 Новини"]))
 async def subscribe(message: Message):
     await message.answer("Виберіть, будь ласка, зі списку", reply_markup=blog)
 
