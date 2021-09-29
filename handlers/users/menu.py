@@ -6,17 +6,17 @@ from loader import dp
 
 @dp.message_handler(Command("menu"))
 async def menu_command(message: Message):
-    await message.answer("Виберіть, будь ласка, зі списку", reply_markup=menu)
+    await message.answer("Виберіть, будь ласка, зі списку ⬇️", reply_markup=menu)
 
 
 @dp.message_handler(Text(equals=["🔙 Головне меню"]))
 async def back_to_menu(message: Message):
-    await message.answer("Виберіть, будь ласка, зі списку", reply_markup=menu)
+    await message.answer("Виберіть, будь ласка, зі списку ⬇️", reply_markup=menu)
 
 
 @dp.message_handler(Text(equals=["📎 Новини"]))
 async def subscribe(message: Message):
-    await message.answer("Виберіть, будь ласка, зі списку", reply_markup=blog)
+    await message.answer("Виберіть, будь ласка, зі списку ⬇️", reply_markup=blog)
 
 
 @dp.message_handler(Text(equals=["🔎 Пошук"]))
@@ -26,12 +26,12 @@ async def search(message: Message):
 
 @dp.message_handler(Text(equals=["🆘 FAQ"]))
 async def faq_menu(message: Message):
-    await message.answer("Виберіть, будь ласка, зі списку", reply_markup=faq)
+    await message.answer("Виберіть, будь ласка, зі списку ⬇️", reply_markup=faq)
 
 
 @dp.message_handler(Text(equals=["💰 Тарифи"]))
 async def tariff_menu(message: Message):
-    await message.answer("Виберіть, будь ласка, зі списку", reply_markup=tariff)
+    await message.answer("Виберіть, будь ласка, зі списку ⬇️", reply_markup=tariff)
 
 
 @dp.message_handler(Text(equals=["⭐️ Написати керівнику"]))
