@@ -37,9 +37,12 @@ async def get_blog_page(page: int):
         return
 
     for i, blog_dict in enumerate(blog_table[first_elem:last_elem]):
-        out += f"{i + 1 + (page * 5)}. {blog_dict['title']} " \
-               f"<a href = \"{blog_dict['link']}\"> " + "➡️" + " </a>\n" \
-               f"<i>{str(blog_dict['date_post'])}</i>\n\n"
+        page_num = i + 1 + (page * 5)
+        link = f"<a href = \"{blog_dict['link']}\"> ➡️</a>"
+        title = blog_dict['title']
+        date_post = str(blog_dict['date_post'])
+
+        out += f"{page_num}. {title} {link}\n<i>{date_post}</i>\n\n"
 
     return out
 
@@ -59,5 +62,4 @@ async def get_new_blog():
     for blog in blog_table:
         if str(blog['date_post']) == datetime.today().strftime('%Y-%m-%d'):
             logging.info("New post " + blog['link'])
-            return f"{blog['title']} " \
-                   f"<a href = \"{blog['link']}\"> " + "➡️" + " </a>\n"
+            return f"{blog['title']}<a href = \"{blog['link']}\"> " + " ➡️" + " </a>\n"
