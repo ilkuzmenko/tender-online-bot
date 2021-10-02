@@ -1,5 +1,7 @@
 from aiogram.dispatcher.filters import Text, Command
-from aiogram.types import Message
+from aiogram.types import Message, ReplyKeyboardRemove
+
+from handlers.users.search import SearchState
 from keyboards.default import menu, faq, tariff, partners, blog
 from loader import dp
 
@@ -21,7 +23,8 @@ async def subscribe(message: Message):
 
 @dp.message_handler(Text(equals=["🔎 Пошук"]))
 async def search(message: Message):
-    await message.answer("Функціонал в розробці")
+    await SearchState.request.set()
+    await message.answer("Напишіть пошуковий запит", reply_markup=ReplyKeyboardRemove())
 
 
 @dp.message_handler(Text(equals=["🆘 FAQ"]))
