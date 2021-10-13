@@ -2,14 +2,15 @@ import json
 import logging
 
 from elasticsearch import Elasticsearch
-
+from config import ES_HOST, ES_USER, ES_PASS
 
 logging.basicConfig(format=u'%(filename)s [LINE:%(lineno)d] #%(levelname)-8s [%(asctime)s]  %(message)s',
                     level=logging.INFO)
 
 
 def size_of_tenders(user_message):
-    elastic = Elasticsearch([{'host': 'localhost', 'port': 9200}], http_auth=("elastic", "changeme"))
+    """ Формує запит та проводить підрахунок кількості відповідей за тендерами Elasticsearch """
+    elastic = Elasticsearch([{'host': ES_HOST, 'port': 9200}], http_auth=(ES_USER, ES_PASS))
     if elastic is not None:
         count_object = {
             "query": {
