@@ -4,7 +4,7 @@ import sys
 import asyncpg
 import logging
 
-from config import HOST, PG_PASS, PG_USER
+from config import PG_HOST, PG_PASS, PG_USER
 
 logging.basicConfig(format=u'%(filename)s [LINE:%(lineno)d] #%(levelname)-8s [%(asctime)s]  %(message)s',
                     level=logging.INFO)
@@ -17,7 +17,7 @@ class Database:
 
     async def connect(self):
         if self.pool is None:
-            self.pool = await asyncpg.create_pool(user=PG_USER, password=PG_PASS, host=HOST)
+            self.pool = await asyncpg.create_pool(user=PG_USER, password=PG_PASS, host=PG_HOST)
             logging.info("Successfully initialized database pool")
 
     async def create_table(self, table: str):
