@@ -32,7 +32,7 @@ def size_of_tenders(user_message):
 
 def search_request(user_message, size):
     """ Формує запит та проводить пошук за тендерами Elasticsearch """
-    elastic = Elasticsearch([{'host': 'localhost', 'port': 9200}], http_auth=("elastic", "changeme"))
+    elastic = Elasticsearch([{'host': ES_HOST, 'port': 9200}], http_auth=(ES_USER, ES_PASS))
     if elastic is not None:
 
         search_object = {
