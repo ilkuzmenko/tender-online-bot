@@ -11,7 +11,7 @@ logging.basicConfig(format=u'%(filename)s [LINE:%(lineno)d] #%(levelname)-8s [%(
 
 
 class Database:
-
+    """ Реалізація класу для роботи з PostgreSQL """
     def __init__(self):
         self.pool = None
 
