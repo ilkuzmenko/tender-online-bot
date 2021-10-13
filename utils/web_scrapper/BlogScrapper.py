@@ -10,7 +10,7 @@ logging.basicConfig(format=u'%(filename)s [LINE:%(lineno)d] #%(levelname)-8s [%(
 
 
 async def num_of_pages():
-
+    """ Рідраховує кількість сторінок на ресурсі info.tender-online.com.ua """
     selected = 0
 
     source = requests.get('https://info.tender-online.com.ua/blog/')
@@ -26,7 +26,7 @@ async def num_of_pages():
 
 
 async def fill_blog_table():
-
+    """ Збирає дані з ресурсу та наповнює сторінку блогу """
     date_post = []
     title = []
     link = []
