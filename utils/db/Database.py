@@ -16,11 +16,13 @@ class Database:
         self.pool = None
 
     async def connect(self):
+        """ Ініціалізація з'єднання з PostgreSQL """
         if self.pool is None:
             self.pool = await asyncpg.create_pool(user=PG_USER, password=PG_PASS, host=PG_HOST)
             logging.info("Successfully initialized database pool")
 
     async def create_table(self, table: str):
+        """ Створює таблицю з файлу формату .sql """
         with open(os.path.join(sys.path[0], "utils/db/" + table + ".sql"), "r") as file:
             sql = file.read()
         try:
@@ -30,6 +32,7 @@ class Database:
             pass
 
     async def disconnect(self):
+        """ Розриває з'єднання з PostgreSQL """
         await self.pool.close()
 
 
