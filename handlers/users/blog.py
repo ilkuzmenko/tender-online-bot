@@ -4,7 +4,7 @@ from aiogram.dispatcher.filters import Text
 from aiogram.types import Message, CallbackQuery
 from aiogram.utils.exceptions import MessageNotModified, MessageTextIsEmpty
 
-from keyboards.inline import blog
+from keyboards.inline import blog_scroll
 from loader import dp, db
 from utils.db.comands import get_blog_page, subscribe_user
 
@@ -14,22 +14,21 @@ user_data = {}
 
 @dp.message_handler(Text(equals=["📩 Отримати новини"]))
 async def btn_get_blog(message: Message):
-    user_data[message.from_user.id] = 0
     blog_page = await get_blog_page(0)
-    await message.answer(blog_page, parse_mode='HTML', reply_markup=blog)
+    await message.answer(blog_page, parse_mode='HTML', reply_markup=blog_scroll, disable_web_page_preview=True)
 
 
 async def update_text(message: Message, new_value: int):
     blog_page = await get_blog_page(new_value)
     try:
-        await message.edit_text(blog_page, parse_mode='HTML', reply_markup=blog)
+        await message.edit_text(blog_page, parse_mode='HTML', reply_markup=blog_scroll, disable_web_page_preview=True)
     except MessageTextIsEmpty:
-        logging.info("Blog MessageTextIsEmpty")
+        logging.info("News MessageTextIsEmpty")
     except MessageNotModified:
-        logging.info("Blog MessageNotModified")
+        logging.info("News MessageNotModified")
 
 
-@dp.callback_query_handler(Text(startswith="num_"))
+@dp.callback_query_handler(Text(startswith="blog_"))
 async def callbacks_num(call: CallbackQuery):
     first_page = user_data.get(call.from_user.id, 0)
     action = call.data.split("_")[1]
