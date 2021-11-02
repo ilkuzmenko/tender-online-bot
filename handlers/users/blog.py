@@ -6,7 +6,7 @@ from aiogram.utils.exceptions import MessageNotModified, MessageTextIsEmpty
 
 from keyboards.inline import blog_scroll
 from loader import dp, db
-from utils.db.comands import get_blog_page, subscribe_user
+from utils.mydb.comands import get_blog_page
 
 
 user_data = {}
@@ -46,9 +46,12 @@ async def callbacks_num(call: CallbackQuery):
 
 @dp.message_handler(Text(equals=["✅ Підписатися/❌ Відписатися"]))
 async def btn_subscribe(message: Message):
-    if not bool(await db.pool.fetchval('SELECT blog FROM users WHERE user_id = $1', message.from_user.id)):
-        await subscribe_user(True, message.from_user.id)
-        await message.answer("✅ Ви успішно підписалися!")
-    else:
-        await subscribe_user(False, message.from_user.id)
-        await message.answer("❌ Ви успішно відпідписалися!")
+    async with db.connection.cursor() as cursor:
+        await cursor.execute(f"SELECT blog FROM users WHERE user_id = {message.from_user.id}")
+        status = int(''.join(map(str, await cursor.fetchone())))
+        if status == 0:
+            await cursor.execute(f"UPDATE users SET blog = 1 WHERE user_id = {message.from_user.id}")
+            await message.answer("✅ Ви успішно підписалися!")
+        else:
+            await cursor.execute(f"UPDATE users SET blog = 0 WHERE user_id = {message.from_user.id}")
+            await message.answer("❌ Ви успішно відпідписалися!")

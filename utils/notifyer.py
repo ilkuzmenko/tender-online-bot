@@ -3,7 +3,7 @@ import time
 
 from config import ADMINS
 from loader import bot
-from utils.db.comands import get_users
+from utils.mydb.comands import get_users
 
 
 logging.basicConfig(format=u'%(filename)s [LINE:%(lineno)d] #%(levelname)-8s [%(asctime)s]  %(message)s',

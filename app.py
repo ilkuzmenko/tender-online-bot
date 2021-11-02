@@ -3,7 +3,7 @@ import logging
 import time
 
 from utils.scheduler import scheduler
-from utils.db.Database import Database
+from utils.mydb.Database import Database
 from utils.notifyer import message_to_all, message_to_admins
 from utils.web_scrapper.BlogScrapper import fill_blog_table
 
@@ -14,11 +14,9 @@ logging.basicConfig(format=u'%(filename)s [LINE:%(lineno)d] #%(levelname)-8s [%(
 async def on_startup(dp):
     start_time = time.time()
     asyncio.create_task(scheduler())
-    db = Database()
 
+    db = Database()
     await db.connect()
-    await db.create_table("user_table")
-    await db.create_table("blog_table")
 
     await fill_blog_table()
 
