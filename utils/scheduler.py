@@ -2,7 +2,7 @@ import asyncio
 import logging
 import aioschedule
 
-from utils.db.comands import get_new_blog
+from utils.mydb.comands import get_new_blog
 from utils.notifyer import message_to_subscribers
 
 logging.basicConfig(format=u'%(filename)s [LINE:%(lineno)d] #%(levelname)-8s [%(asctime)s]  %(message)s',

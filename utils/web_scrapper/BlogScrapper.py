@@ -53,9 +53,10 @@ async def fill_blog_table():
                 date_post.append('01.01.1991')
 
     blogs = list(zip(title, link, date_post))
-
-    for column_value in blogs:
-        logging.info("Add " + str(column_value))
-        await db.pool.execute("INSERT INTO blog (title, link, date_post)"
-                              "VALUES ($1, $2, $3) ON CONFLICT DO NOTHING", column_value[0], column_value[1],
-                              datetime.strptime(column_value[2], '%d.%m.%Y'))
+    async with db.connection.cursor() as cursor:
+        for column_value in blogs:
+            logging.info("Add " + str(column_value))
+            await cursor.execute(f"INSERT INTO blog (title, link, date_post)"
+                                 f"VALUES ('{column_value[0]}', '{column_value[1]}',"
+                                 f"'{datetime.strptime(column_value[2], '%d.%m.%Y')}')"
+                                 f"ON DUPLICATE KEY UPDATE id=id")
