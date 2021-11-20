@@ -20,13 +20,13 @@ async def num_of_pages():
 
     for num in soup:
         selected = int(num.text[-2:])
-    logging.info("Number of pages = " + str(selected))
+    # logging.info("Number of pages = " + str(selected))
 
     return selected
 
 
-async def fill_blog_table():
-    """ Збирає дані з ресурсу та наповнює сторінку блогу """
+async def fill_news_table():
+    """ Збирає дані з ресурсу та наповнює сторінку новин """
     date_post = []
     title = []
     link = []
@@ -52,11 +52,11 @@ async def fill_blog_table():
             else:
                 date_post.append('01.01.1991')
 
-    blogs = list(zip(title, link, date_post))
+    news = list(zip(title, link, date_post))
     async with db.connection.cursor() as cursor:
-        for column_value in blogs:
-            logging.info("Add " + str(column_value))
-            await cursor.execute(f"INSERT INTO blog (title, link, date_post)"
+        for column_value in news:
+            # logging.info("Add " + str(column_value))
+            await cursor.execute(f"INSERT INTO news (title, link, date_post)"
                                  f"VALUES ('{column_value[0]}', '{column_value[1]}',"
                                  f"'{datetime.strptime(column_value[2], '%d.%m.%Y')}')"
                                  f"ON DUPLICATE KEY UPDATE id=id")
