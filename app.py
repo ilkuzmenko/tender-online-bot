@@ -10,7 +10,7 @@ logging.basicConfig(format=u'%(filename)s [LINE:%(lineno)d] #%(levelname)-8s [%(
                     level=logging.INFO)
 
 
-async def on_startup(dp):
+async def on_startup(dp) -> None:
     asyncio.create_task(scheduler())
     await fill_news_table()
     await message_to_admins("Bot on startup")

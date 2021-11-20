@@ -12,7 +12,7 @@ class Database:
     def __init__(self):
         self.connection = None
 
-    async def connect(self):
+    async def connect(self) -> None:
         """ Ініціалізація з'єднання з MySQL """
         if self.connection is None:
             self.connection = await aiomysql.connect(host=MYSQL_HOST, port=3306,

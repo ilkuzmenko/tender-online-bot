@@ -4,6 +4,8 @@ import os
 import sys
 
 from datetime import datetime
+from typing import Optional
+
 from loader import db
 from utils.web_scrapper.NewsScrapper import fill_news_table
 
@@ -12,7 +14,7 @@ logging.basicConfig(format=u'%(filename)s [LINE:%(lineno)d] #%(levelname)-8s [%(
                     level=logging.INFO)
 
 
-async def add_user(user_id, phone, first_n, last_n):
+async def add_user(user_id, phone, first_n, last_n) -> None:
     """ Додає користувача до MySQL """
     async with db.connection.cursor() as cursor:
         await cursor.execute(f"INSERT INTO users (user_id, phone, first_name, last_name)"
@@ -28,9 +30,9 @@ async def get_users():
     return user_table
 
 
-async def get_new_blog():
+async def get_new_blog() -> str:
     """ Перевіряє дані з ресурсу на наявність нового допису """
-    with open(os.path.join(sys.path[0], "init/news_table.sql"), "r") as file:
+    with open(os.path.join(sys.path[0], "utils/mydb/database_init/news_table.sql"), "r") as file:
         sql = file.read()
     async with db.connection.cursor() as cursor:
         await cursor.execute("DROP TABLE news")
@@ -46,7 +48,7 @@ async def get_new_blog():
             return f"{blog[0]}<a href = \"{blog[1]}\"> " + " ➡️" + " </a>\n"
 
 
-async def get_news_page(page: int):
+async def get_news_page(page: int) -> Optional[str]:
     """ Формує вивід для однієї сторінки дописів """
     async with db.connection.cursor() as cursor:
         await cursor.execute(f"SELECT id, title, link, date_post FROM news ORDER BY date_post DESC")

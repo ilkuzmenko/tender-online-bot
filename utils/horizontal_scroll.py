@@ -3,7 +3,7 @@ import logging
 from aiogram.utils.exceptions import MessageTextIsEmpty, MessageNotModified
 
 
-async def scroll(call, user_data, update_text):
+async def scroll(call, user_data, update_text) -> None:
     first_page = user_data.get(call.from_user.id, 0)
     action = call.data.split("_")[1]
 
@@ -18,7 +18,7 @@ async def scroll(call, user_data, update_text):
     await call.answer()
 
 
-async def update_page(message, page, reply_markup):
+async def update_page(message, page, reply_markup) -> None:
     try:
         await message.edit_text(page,
                                 parse_mode='HTML',

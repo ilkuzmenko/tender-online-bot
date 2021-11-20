@@ -2,15 +2,16 @@ import json
 import logging
 import math
 from datetime import datetime
+from typing import Optional
 
 from elasticsearch import Elasticsearch
 from config import ES_HOST, ES_USER, ES_PASS
 
-# logging.basicConfig(format=u'%(filename)s [LINE:%(lineno)d] #%(levelname)-8s [%(asctime)s]  %(message)s',
-#                     level=logging.INFO)
+logging.basicConfig(format=u'%(filename)s [LINE:%(lineno)d] #%(levelname)-8s [%(asctime)s]  %(message)s',
+                    level=logging.INFO)
 
 
-def size_of_tenders(user_message):
+def size_of_tenders(user_message) -> int:
     """ Формує запит та проводить підрахунок кількості відповідей за тендерами Elasticsearch """
     elastic = Elasticsearch([{'host': ES_HOST, 'port': 9200}], http_auth=(ES_USER, ES_PASS))
     if elastic is not None:
@@ -32,7 +33,7 @@ def size_of_tenders(user_message):
         return size_res
 
 
-def search_request(user_message, size):
+def search_request(user_message, size) -> Elasticsearch.search:
     """ Формує запит та проводить пошук за тендерами Elasticsearch """
     elastic = Elasticsearch([{'host': ES_HOST, 'port': 9200}], http_auth=(ES_USER, ES_PASS))
     if elastic is not None:
@@ -59,12 +60,9 @@ def search_request(user_message, size):
         return search_res
 
 
-async def get_tender_page(user_message, page: int):
+async def get_tender_page(user_message, page: int) -> Optional[str]:
     """ Формує вивід однієї сторінки тендерів """
     try:
-        # logging.info("---------------------")
-        # logging.info(user_message)
-        # logging.info("---------------------")
         size_res = size_of_tenders(user_message)
         search_res = search_request(user_message, size_res)
         answer = ""
