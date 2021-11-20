@@ -4,7 +4,7 @@ from .help import dp
 from .faq import dp
 from .tariff import dp
 from .partners import dp
-from .blog import dp
+from .news import dp
 
 
 __all__ = ["dp"]
