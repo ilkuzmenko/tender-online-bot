@@ -1,10 +1,8 @@
 import asyncio
 import logging
 import os
-import time
 
 from utils.scheduler import scheduler
-from utils.mydb.Database import Database
 from utils.notifyer import message_to_admins
 from utils.web_scrapper.NewsScrapper import fill_news_table
 
@@ -13,17 +11,10 @@ logging.basicConfig(format=u'%(filename)s [LINE:%(lineno)d] #%(levelname)-8s [%(
 
 
 async def on_startup(dp):
-    start_time = time.time()
     asyncio.create_task(scheduler())
-
-    db = Database()
-    await db.connect()
-
     await fill_news_table()
-
     await message_to_admins("Bot on startup")
-
-    logging.info("Bot on startup --- %s seconds ---" % (time.time() - start_time))
+    logging.info("Bot on startup")
 
 
 if __name__ == '__main__':
