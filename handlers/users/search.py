@@ -37,11 +37,12 @@ async def cmd_dialog(message: Message, state: FSMContext):
     await message.answer("Оберіть зі списку", reply_markup=menu)
 
 
-async def update_search_page(message: Message, new_value: int):
+@dp.callback_query_handler(Text(startswith="search_"))
+async def callbacks_num(call: CallbackQuery):
+    await scroll(call, user_data, _update_search_page)
+
+
+async def _update_search_page(message: Message, new_value: int) -> None:
     search_page = await get_tender_page(request_handler, new_value)
     await update_page(message, search_page, search_scroll)
 
-
-@dp.callback_query_handler(Text(startswith="search_"))
-async def callbacks_num(call: CallbackQuery):
-    await scroll(call, user_data, update_search_page)
