@@ -5,7 +5,7 @@ create table if not exists users
 	phone bigint null,
 	first_name varchar(255) null,
 	last_name varchar(255) null,
-	blog TINYINT default 0,
+	news TINYINT default 0,
 	dt datetime default CURRENT_TIMESTAMP null,
 	constraint users_pk
 		primary key (id)

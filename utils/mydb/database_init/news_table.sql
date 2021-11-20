@@ -1,4 +1,4 @@
-create table if not exists blog
+create table if not exists news
 (
 	id int auto_increment,
 	title varchar(255) null,
