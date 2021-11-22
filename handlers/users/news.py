@@ -31,12 +31,15 @@ async def _update_news_page(message: Message, new_value: int) -> None:
 
 @dp.message_handler(Text(equals=["✅ Підписатися/❌ Відписатися"]))
 async def btn_subscribe(message: Message):
-    async with db.connection.cursor() as cursor:
-        await cursor.execute(f"SELECT news FROM users WHERE user_id = {message.from_user.id}")
-        status = int(''.join(map(str, await cursor.fetchone())))
-        if status == 0:
-            await cursor.execute(f"UPDATE users SET news = 1 WHERE user_id = {message.from_user.id}")
-            await message.answer("✅ Ви успішно підписалися!")
-        else:
-            await cursor.execute(f"UPDATE users SET news = 0 WHERE user_id = {message.from_user.id}")
-            await message.answer("❌ Ви успішно відпідписалися!")
+    try:
+        async with db.connection.cursor() as cursor:
+            await cursor.execute(f"SELECT news FROM users WHERE user_id = {message.from_user.id}")
+            status = int(''.join(map(str, await cursor.fetchone())))
+            if status == 0:
+                await cursor.execute(f"UPDATE users SET news = 1 WHERE user_id = {message.from_user.id}")
+                await message.answer("✅ Ви успішно підписалися!")
+            else:
+                await cursor.execute(f"UPDATE users SET news = 0 WHERE user_id = {message.from_user.id}")
+                await message.answer("❌ Ви успішно відпідписалися!")
+    except TypeError:
+            await message.answer("❌ Схоже Ви не зареєстровані, виконайте команду /start та спробуйте ще!")
