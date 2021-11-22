@@ -59,4 +59,4 @@ async def fill_news_table() -> None:
             await cursor.execute(f"INSERT INTO news (title, link, date_post)"
                                  f"VALUES ('{column_value[0]}', '{column_value[1]}',"
                                  f"'{datetime.strptime(column_value[2], '%d.%m.%Y')}')"
-                                 f"ON DUPLICATE KEY UPDATE id=id")
+                                 f"ON DUPLICATE KEY UPDATE link=link")

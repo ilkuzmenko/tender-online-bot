@@ -7,3 +7,6 @@ create table if not exists news
 	constraint blog_pk
 		primary key (id)
 );
+
+create unique index news_link_uindex
+	on news (link);
