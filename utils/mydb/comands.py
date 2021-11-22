@@ -53,7 +53,7 @@ async def get_news_page(page: int) -> Optional[str]:
     async with db.connection.cursor() as cursor:
         await cursor.execute(f"SELECT id, title, link, date_post FROM news ORDER BY date_post DESC")
         news_table = await cursor.fetchall()
-    out = '<b>📩 Блог:</b>\n\n'
+    out = '<b>📩 Новини:</b>\n\n'
     # logging.info("Pages " + str(page))
 
     if page == 0:
@@ -66,12 +66,12 @@ async def get_news_page(page: int) -> Optional[str]:
     else:
         return
 
-    for i, blog_dict in enumerate(news_table[first_elem:last_elem]):
+    for i, news_dict in enumerate(news_table[first_elem:last_elem]):
         page_num = i + 1 + (page * 5)
-        # logging.info(str(blog_dict))
-        title = blog_dict[1]
-        link = f"<a href = \"{blog_dict[2]}\"> «детальніше»</a>"
-        date_post = str(blog_dict[3])
+        # logging.info(str(news_dict))
+        title = news_dict[1]
+        link = f"<a href = \"{news_dict[2]}\"> «детальніше»</a>"
+        date_post = str(news_dict[3])
 
         out += f"{page_num}. {title} {link}\n<i>{date_post}</i>\n\n"
 
