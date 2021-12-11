@@ -6,7 +6,6 @@ from loader import dp, db
 from utils.horizontal_scroll import scroll, update_page
 from utils.mydb.comands import get_news_page
 
-
 user_data = {}
 
 
@@ -42,4 +41,4 @@ async def btn_subscribe(message: Message):
                 await cursor.execute(f"UPDATE users SET news = 0 WHERE user_id = {message.from_user.id}")
                 await message.answer("❌ Ви успішно відпідписалися!")
     except TypeError:
-            await message.answer("❌ Схоже Ви не зареєстровані, виконайте команду /start та спробуйте ще!")
+        await message.answer("❌ Схоже Ви не зареєстровані, виконайте команду /start та спробуйте ще!")
