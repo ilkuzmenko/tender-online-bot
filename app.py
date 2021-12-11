@@ -1,6 +1,5 @@
 import asyncio
 import logging
-import os
 
 from utils.scheduler import scheduler
 from utils.notifyer import message_to_admins
@@ -18,6 +17,7 @@ async def on_startup(dp) -> None:
 
 
 if __name__ == '__main__':
+    import os
     from aiogram import executor
     from handlers import dp
 
@@ -32,5 +32,3 @@ if __name__ == '__main__':
             os.remove(path_log_file)
     else:
         logging.info("Bot launched now. Finishing processes. Goodbye!")
-
-
