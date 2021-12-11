@@ -21,7 +21,7 @@ if __name__ == '__main__':
     from aiogram import executor
     from handlers import dp
 
-    path_log_file = 'logfile'
+    path_log_file = os.path.dirname(os.path.abspath(__file__)) + '/logfile'
 
     if not os.path.isfile(path_log_file):
         with open(path_log_file, 'w') as file:
