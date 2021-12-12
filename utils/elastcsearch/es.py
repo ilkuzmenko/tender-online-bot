@@ -11,7 +11,7 @@ logging.basicConfig(format=u'%(filename)s [LINE:%(lineno)d] #%(levelname)-8s [%(
                     level=logging.INFO)
 
 
-def size_of_tenders(user_message) -> int:
+def size_of_tenders(user_message: str, region: str) -> int:
     """ Формує запит та проводить підрахунок кількості відповідей за тендерами Elasticsearch """
     elastic = Elasticsearch([{'host': ES_HOST, 'port': 9200}], http_auth=(ES_USER, ES_PASS))
     if elastic is not None:
@@ -19,8 +19,19 @@ def size_of_tenders(user_message) -> int:
             "query": {
                 "bool": {
                     "must": [
-                        {"match": {"title": user_message}}
+                        {"match": {"title": user_message}},
+                        {
+                            "bool": {
+                                "should": [
+                                    {"match": {"regions": region}}
+                                ],
+                            }
+                        }
                     ],
+                    "should": [
+                        {"match": {"regions": 'Київ'}}
+                    ],
+
                     "filter": [
                         {"term": {"status": "active"}},
                         {"range": {"publishedDate": {"lte": "now"}}}
@@ -33,17 +44,23 @@ def size_of_tenders(user_message) -> int:
         return size_res
 
 
-def search_request(user_message, size) -> Elasticsearch.search:
+def search_request(user_message: str, region: str, size) -> Elasticsearch.search:
     """ Формує запит та проводить пошук за тендерами Elasticsearch """
     elastic = Elasticsearch([{'host': ES_HOST, 'port': 9200}], http_auth=(ES_USER, ES_PASS))
     if elastic is not None:
-
         search_object = {
             "size": size,
             "query": {
                 "bool": {
                     "must": [
-                        {"match": {"title": user_message}}
+                        {"match": {"title": user_message}},
+                        {
+                            "bool": {
+                                "should": [
+                                    {"match": {"regions": region}}
+                                ],
+                            }
+                        }
                     ],
                     "filter": [
                         {"term": {"status": "active"}},
@@ -60,31 +77,21 @@ def search_request(user_message, size) -> Elasticsearch.search:
         return search_res
 
 
-async def get_tender_page(user_message, page: int) -> Optional[str]:
+async def get_tenders(user_message, region) -> Optional[str]:
     """ Формує вивід однієї сторінки тендерів """
     try:
-        size_res = size_of_tenders(user_message)
-        search_res = search_request(user_message, size_res)
+        size_res = size_of_tenders(user_message, region)
+        search_res = search_request(user_message, region, size_res)
         answer = ""
 
-        if page == 0:
-            first_elem = 0
-            last_elem = 5
-        elif 0 < page <= math.ceil((size_res / 5)):
-            counter = page * 5
-            first_elem = 0 + counter
-            last_elem = 5 + counter
-        else:
-            return
-
-        for i in range(first_elem, last_elem):
+        for i in range(size_res):
             tender = search_res["hits"]["hits"][i]
-            link = "<a href = \"https://tender-online.com.ua/tender/view/" + str(tender["_id"]) + "\"> «детальніше»</a>"
             publishedDate = datetime.strptime(tender["_source"]["publishedDate"][0:10], '%Y-%m-%d').strftime('%d.%m.%Y')
             title = tender["_source"]["title"]
             amount = str(tender["_source"]["amount"])
             currency = tender["_source"]["currency"]
-            answer += f"{i + 1}. {title}{link}\nОчікування пропозиції\n<i>{publishedDate}</i>\n{amount}{currency}\n\n"
+            link = "<a href = \"https://tender-online.com.ua/tender/view/" + str(tender["_id"]) + "\">«детальніше»</a>"
+            answer += f"{i + 1}. {title}\nОчікування пропозиції\n<i>{publishedDate}</i>\n{amount}{currency}\n{link}\n\n"
         return answer
     except IndexError:
         return "Нічого не знайшов 😔"
