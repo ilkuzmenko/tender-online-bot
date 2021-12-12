@@ -1,48 +1,49 @@
-import logging
-
-from aiogram.dispatcher.filters import Text
 from aiogram.dispatcher import FSMContext
 from aiogram.dispatcher.filters.state import State, StatesGroup
-from aiogram.types import Message, CallbackQuery
-
-from handlers.users.news import scroll
-from keyboards.inline import search_scroll
-from utils.elastcsearch.es import get_tender_page
+from aiogram.types import Message, ContentTypes, ReplyKeyboardRemove
+from utils.elastcsearch.es import get_tenders
 from keyboards.default import menu
 from loader import dp
-from utils.horizontal_scroll import update_page
 
 
 class SearchState(StatesGroup):
-    request = State()
+    waiting_for_tender_region = State()
+    waiting_for_tender_request = State()
 
 
-user_data = {}
-request_handler = ""
-
-
-@dp.message_handler(state=SearchState.request)
-async def cmd_dialog(message: Message, state: FSMContext):
+@dp.message_handler(state=SearchState.waiting_for_tender_region, content_types=ContentTypes.TEXT)
+async def region_step(message: Message, state: FSMContext):
     async with state.proxy() as data:
-        data['text'] = message.text
-        user_message = data['text']
-    global request_handler
-    request_handler = user_message
-    logging.info(request_handler)
-    await message.answer(await get_tender_page(user_message, 0),
-                         parse_mode='HTML',
-                         reply_markup=search_scroll,
-                         disable_web_page_preview=True)
+        data['region'] = message.text
+    await message.answer("Напишіть пошуковий запит", reply_markup=ReplyKeyboardRemove())
+    await SearchState.waiting_for_tender_request.set()
+
+
+@dp.message_handler(state=SearchState.waiting_for_tender_request)
+async def request_step(message: Message, state: FSMContext):
+    async with state.proxy() as data:
+        data['request'] = message.text
+
+    tenders = await get_tenders(data['request'], region=data['region'])
+
+    # print(info)
+    if len(tenders) > 4096:
+        index, start_index, div_blocks = 0, 0, 0
+        for current_value, next_value in zip(tenders, tenders[1:]):
+            index += 1
+            if (current_value == next_value == '\n') and (div_blocks != 15):
+                div_blocks += 1
+            elif div_blocks == 15:
+                # print(div_blocks, ' items ', [start_index, index])
+                await message.answer(tenders[start_index:index], parse_mode='HTML', disable_web_page_preview=True)
+                start_index = index
+                div_blocks = 0
+        # print(index, div_blocks)
+    else:
+        await message.answer(tenders, parse_mode='HTML', disable_web_page_preview=True)
+
     await state.finish()
     await message.answer("Оберіть зі списку", reply_markup=menu)
 
 
-@dp.callback_query_handler(Text(startswith="search_"))
-async def callbacks_num(call: CallbackQuery):
-    await scroll(call, user_data, _update_search_page)
-
-
-async def _update_search_page(message: Message, new_value: int) -> None:
-    search_page = await get_tender_page(request_handler, new_value)
-    await update_page(message, search_page, search_scroll)
 

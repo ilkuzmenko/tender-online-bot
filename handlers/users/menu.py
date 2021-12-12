@@ -2,7 +2,7 @@ from aiogram.dispatcher.filters import Text, Command
 from aiogram.types import Message, ReplyKeyboardRemove
 
 from handlers.users.search import SearchState
-from keyboards.default import menu, faq, tariff, partners, blog
+from keyboards.default import menu, faq, tariff, partners, blog, regions
 from loader import dp
 
 
@@ -23,8 +23,8 @@ async def subscribe(message: Message):
 
 @dp.message_handler(Text(equals=["🔎 Пошук"]))
 async def search(message: Message):
-    await SearchState.request.set()
-    await message.answer("Напишіть пошуковий запит", reply_markup=ReplyKeyboardRemove())
+    await message.answer("Оберіть регіон:", reply_markup=regions)
+    await SearchState.waiting_for_tender_region.set()
 
 
 @dp.message_handler(Text(equals=["🆘 FAQ"]))
