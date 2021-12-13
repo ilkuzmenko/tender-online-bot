@@ -6,7 +6,13 @@ regions = ReplyKeyboardMarkup(
             KeyboardButton(text="🔙 Головне меню")
         ],
         [
-            KeyboardButton(text="АР Крим"),
+            KeyboardButton(text="Вся Україна"),
+        ],
+        [
+            KeyboardButton(text="м.Київ"),
+        ],
+        [
+            KeyboardButton(text="Автономна Республіка Крим"),
         ],
         [
             KeyboardButton(text="Вінницька"),
@@ -31,9 +37,6 @@ regions = ReplyKeyboardMarkup(
         ],
         [
             KeyboardButton(text="Івано-Франківська"),
-        ],
-        [
-            KeyboardButton(text="Київ"),
         ],
         [
             KeyboardButton(text="Київська"),
@@ -82,6 +85,9 @@ regions = ReplyKeyboardMarkup(
         ],
         [
             KeyboardButton(text="Чернігівська"),
+        ],
+        [
+            KeyboardButton(text="м. Севастополь"),
         ],
     ],
     resize_keyboard=True
