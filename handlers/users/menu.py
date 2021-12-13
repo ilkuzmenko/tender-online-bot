@@ -23,7 +23,7 @@ async def subscribe(message: Message):
 
 @dp.message_handler(Text(equals=["🔎 Пошук"]))
 async def search(message: Message):
-    await message.answer("Оберіть регіон:", reply_markup=regions)
+    await message.answer("Оберіть область/регіон:", reply_markup=regions)
     await SearchState.waiting_for_tender_region.set()
 
 
