@@ -12,9 +12,10 @@ logging.basicConfig(format=u'%(filename)s [LINE:%(lineno)d] #%(levelname)-8s [%(
 
 def search_request(user_message: str, region_name: str) -> Elasticsearch.search:
     """ Формує запит та проводить пошук за тендерами Elasticsearch """
-    elastic = Elasticsearch([{'host': ES_HOST, 'port': 9200}], http_auth=(ES_USER, ES_PASS))
-    if elastic is not None:
 
+    elastic = Elasticsearch([{'host': ES_HOST, 'port': 9200}], http_auth=(ES_USER, ES_PASS))
+
+    if elastic is not None:
         region_name = region_name if region_name[0] != 'м' else region_name[2:]
 
         if region_name != "Вся Україна":
