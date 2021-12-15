@@ -70,9 +70,9 @@ async def get_news_page(page: int) -> Optional[str]:
         page_num = i + 1 + (page * 5)
         # logging.info(str(news_dict))
         title = news_dict[1]
-        link = f"<a href = \"{news_dict[2]}\"> «детальніше»</a>"
         date_post = str(news_dict[3])
+        link = f"<a href = \"{news_dict[2]}\"> «детальніше»</a>"
 
-        out += f"{page_num}. {title} {link}\n<i>{date_post}</i>\n\n"
+        out += f"<b>{page_num}. {title}\n</b><i>{date_post}</i>\n{link}\n\n"
 
     return out
