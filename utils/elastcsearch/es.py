@@ -4,6 +4,7 @@ import logging
 from datetime import datetime
 from typing import Optional
 from elasticsearch import Elasticsearch
+
 from config import ES_HOST, ES_USER, ES_PASS
 
 logging.basicConfig(format=u'%(filename)s [LINE:%(lineno)d] #%(levelname)-8s [%(asctime)s]  %(message)s',
@@ -62,9 +63,12 @@ async def get_tenders(user_message, region) -> Optional[str]:
 
     answer = ""
     for i in range(search_res["hits"]["total"]):
+
         tender = search_res["hits"]["hits"][i]
-        publishedDate = datetime.strptime(tender["_source"]["publishedDate"][0:10], '%Y-%m-%d').strftime('%d.%m.%Y')
         title = tender["_source"]["title"]
+        if "[ТЕСТУВАННЯ]" in title:
+            continue
+        publishedDate = datetime.strptime(tender["_source"]["publishedDate"][0:10], '%Y-%m-%d').strftime('%d.%m.%Y')
         amount = str(tender["_source"]["amount"])
         currency = tender["_source"]["currency"]
         link = "<a href = \"https://tender-online.com.ua/tender/view/" + str(tender["_id"]) + "\">«детальніше»</a>"

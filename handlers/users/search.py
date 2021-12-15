@@ -24,6 +24,12 @@ async def request_step(message: Message, state: FSMContext):
     async with state.proxy() as data:
         data['request'] = message.text
 
+    if 'тестування' in str(message.text).lower():
+        await message.answer("Ні-ні, я не покажу, що тут тестую😑\nКраще оберіть щось інше!",
+                             reply_markup=menu)
+        await state.finish()
+        return
+
     tenders = await get_tenders(data['request'], region=data['region'])
 
     # print(info)
