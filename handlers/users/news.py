@@ -1,31 +1,41 @@
+import logging
+
 from aiogram.dispatcher.filters import Text
 from aiogram.types import Message, CallbackQuery
+from aiogram.utils.exceptions import MessageTextIsEmpty, MessageNotModified, MessageCantBeEdited
 
 from keyboards.inline import news_scroll
 from loader import dp, db
-from utils.horizontal_scroll import scroll, update_page
 from utils.mydb.comands import get_news_page
 
 user_data = {}
 
 
 @dp.message_handler(Text(equals=["📩 Отримати новини"]))
-async def btn_get_news(message: Message):
-    news_page = await get_news_page(0)
-    await message.answer(news_page,
-                         parse_mode='HTML',
-                         reply_markup=news_scroll,
-                         disable_web_page_preview=True)
+async def btn_get_news(message: Message, new_value=0):
+    news_page = await get_news_page(new_value)
+    try:
+        await message.edit_text(news_page, parse_mode='HTML', reply_markup=news_scroll, disable_web_page_preview=True)
+    except MessageCantBeEdited:
+        await message.answer(news_page, parse_mode='HTML', reply_markup=news_scroll, disable_web_page_preview=True)
+    except MessageTextIsEmpty or MessageNotModified:
+        logging.info("News MessageTextIsEmpty or MessageNotModified")
 
 
 @dp.callback_query_handler(Text(startswith="news_"))
 async def callbacks_num(call: CallbackQuery):
-    await scroll(call, user_data, _update_news_page)
+    first_page = user_data.get(call.from_user.id, 0)
+    action = call.data.split("_")[1]
 
-
-async def _update_news_page(message: Message, new_value: int) -> None:
-    news_page = await get_news_page(new_value)
-    await update_page(message, news_page, news_scroll)
+    if action == "incr":
+        user_data[call.from_user.id] = first_page + 1
+        await btn_get_news(call.message, first_page+1)
+    elif action == "decr":
+        user_data[call.from_user.id] = first_page - 1
+        await btn_get_news(call.message, first_page-1)
+    elif action == "finish":
+        await call.message.edit_text(first_page)
+    await call.answer()
 
 
 @dp.message_handler(Text(equals=["✅ Підписатися/❌ Відписатися"]))
