@@ -10,7 +10,7 @@ logging.basicConfig(format=u'%(filename)s [LINE:%(lineno)d] #%(levelname)-8s [%(
 
 
 async def num_of_pages() -> int:
-    """ Рідраховує кількість сторінок на ресурсі info.tender-online.com.ua """
+    """ Підраховує кількість сторінок на ресурсі info.tender-online.com.ua """
     selected = 0
 
     source = requests.get('https://info.tender-online.com.ua/blog/')
