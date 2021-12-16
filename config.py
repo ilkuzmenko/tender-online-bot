@@ -9,6 +9,7 @@ ADMINS = os.environ['ADMINS']
 MYSQL_HOST = os.environ['MYSQL_HOST']
 MYSQL_USER = os.environ['MYSQL_USER']
 MYSQL_PASS = os.environ['MYSQL_PASS']
+MYSQL_DB_NAME = os.environ['MYSQL_DB_NAME']
 
 ES_HOST = os.environ['ES_HOST']
 ES_USER = os.environ['ES_USER']
