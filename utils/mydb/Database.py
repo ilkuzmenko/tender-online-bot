@@ -1,7 +1,6 @@
 import aiomysql
 import logging
-from config import MYSQL_HOST, MYSQL_USER, MYSQL_PASS
-
+from config import MYSQL_HOST, MYSQL_USER, MYSQL_PASS, MYSQL_DB_NAME
 
 logging.basicConfig(format=u'%(filename)s [LINE:%(lineno)d] #%(levelname)-8s [%(asctime)s]  %(message)s',
                     level=logging.INFO)
@@ -15,7 +14,12 @@ class Database:
     async def connect(self) -> None:
         """ Ініціалізація з'єднання з MySQL """
         if self.connection is None:
-            self.connection = await aiomysql.connect(host=MYSQL_HOST, port=3306,
-                                                     user=MYSQL_USER, password=MYSQL_PASS,
-                                                     db="mydb", autocommit=True)
+            self.connection = await aiomysql.connect(
+                host=MYSQL_HOST,
+                port=3306,
+                user=MYSQL_USER,
+                password=MYSQL_PASS,
+                db=MYSQL_DB_NAME,
+                autocommit=True
+            )
             logging.info("Successfully initialized database connection")
