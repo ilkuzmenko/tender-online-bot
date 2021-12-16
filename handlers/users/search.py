@@ -51,6 +51,3 @@ async def request_step(message: Message, state: FSMContext):
 
     await state.finish()
     await message.answer("Оберіть зі списку", reply_markup=menu)
-
-
-
