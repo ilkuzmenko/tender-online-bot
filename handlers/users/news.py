@@ -1,5 +1,3 @@
-import logging
-
 from aiogram.dispatcher.filters import Text
 from aiogram.types import Message, CallbackQuery
 from aiogram.utils.exceptions import MessageTextIsEmpty, MessageNotModified, MessageCantBeEdited
@@ -19,7 +17,7 @@ async def btn_get_news(message: Message, new_value=0):
     except MessageCantBeEdited:
         await message.answer(news_page, parse_mode='HTML', reply_markup=news_scroll, disable_web_page_preview=True)
     except MessageTextIsEmpty or MessageNotModified:
-        logging.info("News MessageTextIsEmpty or MessageNotModified")
+        pass
 
 
 @dp.callback_query_handler(Text(startswith="news_"))
