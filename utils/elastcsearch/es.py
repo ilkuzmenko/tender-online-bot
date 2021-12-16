@@ -1,20 +1,17 @@
 import json
-import logging
 
-from datetime import datetime
-from typing import Optional
 from elasticsearch import Elasticsearch
 
 from config import ES_HOST, ES_USER, ES_PASS
-
-logging.basicConfig(format=u'%(filename)s [LINE:%(lineno)d] #%(levelname)-8s [%(asctime)s]  %(message)s',
-                    level=logging.INFO)
 
 
 def search_request(user_message: str, region_name: str) -> Elasticsearch.search:
     """ Формує запит та проводить пошук за тендерами Elasticsearch """
 
-    elastic = Elasticsearch([{'host': ES_HOST, 'port': 9200}], http_auth=(ES_USER, ES_PASS))
+    elastic = Elasticsearch(
+        [{'host': ES_HOST, 'port': 9200}],
+        http_auth=(ES_USER, ES_PASS)
+    )
 
     if elastic is not None:
         region_name = region_name if region_name[0] != 'м' else region_name[2:]
@@ -55,31 +52,9 @@ def search_request(user_message: str, region_name: str) -> Elasticsearch.search:
                 {"publishedDate": {"order": "desc"}}
             ]
         }
-        search_res = elastic.search(index='tenders', body=json.dumps(search_object), request_timeout=30)
-        # logging.info(f"Counts of elastic = {search_res}")
+        search_res = elastic.search(
+            index='tenders',
+            body=json.dumps(search_object),
+            request_timeout=30
+        )
         return search_res
-
-
-async def get_tenders(user_message, region) -> Optional[str]:
-    """ Формує вивід однієї сторінки тендерів """
-
-    search_res = search_request(user_message, region)
-
-    if search_res["hits"]["total"] == 0:
-        return "Нічого не знайшов 😔"
-
-    answer = ""
-    for i in range(search_res["hits"]["total"]):
-
-        tender = search_res["hits"]["hits"][i]
-        title = tender["_source"]["title"]
-        publishedDate = datetime.strptime(tender["_source"]["publishedDate"][0:10], '%Y-%m-%d').strftime('%d.%m.%Y')
-        amount = str(tender["_source"]["amount"])
-        currency = tender["_source"]["currency"]
-        link = "<a href = \"https://tender-online.com.ua/tender/view/" + str(tender["_id"]) + "\">«детальніше»</a>"
-        answer += f"<b>{i+1}. {title}" \
-                  f"</b>\nОчікування пропозиції\n" \
-                  f"<i>{amount}</i> {currency}\n" \
-                  f"<i>{publishedDate}</i>\n" \
-                  f"{link}\n\n"
-    return answer

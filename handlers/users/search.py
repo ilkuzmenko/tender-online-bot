@@ -1,7 +1,10 @@
+from datetime import datetime
+from typing import Optional
+
 from aiogram.dispatcher import FSMContext
 from aiogram.dispatcher.filters.state import State, StatesGroup
 from aiogram.types import Message, ContentTypes, ReplyKeyboardRemove
-from utils.elastcsearch.es import get_tenders
+from utils.elastcsearch.es import search_request
 from keyboards.default import menu
 from loader import dp
 
@@ -49,3 +52,28 @@ async def request_step(message: Message, state: FSMContext):
 
     await state.finish()
     await message.answer("Оберіть зі списку", reply_markup=menu)
+
+
+async def get_tenders(user_message, region) -> Optional[str]:
+    """ Формує вивід однієї сторінки тендерів """
+
+    search_res = search_request(user_message, region)
+
+    if search_res["hits"]["total"] == 0:
+        return "Нічого не знайшов 😔"
+
+    answer = ""
+    for i in range(search_res["hits"]["total"]):
+
+        tender = search_res["hits"]["hits"][i]
+        title = tender["_source"]["title"]
+        publishedDate = datetime.strptime(tender["_source"]["publishedDate"][0:10], '%Y-%m-%d').strftime('%d.%m.%Y')
+        amount = str(tender["_source"]["amount"])
+        currency = tender["_source"]["currency"]
+        link = "<a href = \"https://tender-online.com.ua/tender/view/" + str(tender["_id"]) + "\">«детальніше»</a>"
+        answer += f"<b>{i+1}. {title}" \
+                  f"</b>\nОчікування пропозиції\n" \
+                  f"<i>{amount}</i> {currency}\n" \
+                  f"<i>{publishedDate}</i>\n" \
+                  f"{link}\n\n"
+    return answer
