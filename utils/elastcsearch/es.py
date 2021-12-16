@@ -36,6 +36,13 @@ def search_request(user_message: str, region_name: str) -> Elasticsearch.search:
                 "bool": {
                     "must": [
                         {"match": {"title": user_message}},
+                        {
+                            "bool": {
+                                "must_not": [
+                                    {"match": {"title": "тестування"}}
+                                ]
+                            }
+                        },
                         region_object
                     ],
                     "filter": [
@@ -48,7 +55,7 @@ def search_request(user_message: str, region_name: str) -> Elasticsearch.search:
                 {"publishedDate": {"order": "desc"}}
             ]
         }
-        search_res = elastic.search(index='tenders', body=json.dumps(search_object))
+        search_res = elastic.search(index='tenders', body=json.dumps(search_object), request_timeout=30)
         # logging.info(f"Counts of elastic = {search_res}")
         return search_res
 
@@ -66,8 +73,6 @@ async def get_tenders(user_message, region) -> Optional[str]:
 
         tender = search_res["hits"]["hits"][i]
         title = tender["_source"]["title"]
-        if "[ТЕСТУВАННЯ]" in title:
-            continue
         publishedDate = datetime.strptime(tender["_source"]["publishedDate"][0:10], '%Y-%m-%d').strftime('%d.%m.%Y')
         amount = str(tender["_source"]["amount"])
         currency = tender["_source"]["currency"]
