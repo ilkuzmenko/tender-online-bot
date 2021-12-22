@@ -76,10 +76,11 @@ async def subscribe_user(user_id: int) -> str:
 
 async def get_new_news() -> str:
     """ Перевіряє дані з ресурсу на наявність нового допису """
-    with open(os.path.join(sys.path[0], "utils/mydb/database_init/news_table.sql"), "r") as file:
+    path_to_table = os.path.dirname(os.path.abspath(__file__)) + '/database_init/news_table.sql'
+    with open(path_to_table, "r") as file:
         sql = file.read()
     async with db.connection.cursor() as cursor:
-        await cursor.execute("DROP TABLE news")
+        await cursor.execute("DROP TABLE IF EXISTS news")
         await cursor.execute(sql)
 
         await fill_news_table()
@@ -90,3 +91,4 @@ async def get_new_news() -> str:
         if str(news[2]) == datetime.today().strftime('%Y-%m-%d'):
             logging.info("Find new post " + news[1])
             return f"{news[0]}<a href = \"{news[1]}\"> " + " ➡️" + " </a>\n"
+    logging.info("No new posts found")
