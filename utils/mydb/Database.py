@@ -9,12 +9,12 @@ logging.basicConfig(format=u'%(filename)s [LINE:%(lineno)d] #%(levelname)-8s [%(
 class Database:
     """ Реалізація класу для роботи з MySQL """
     def __init__(self):
-        self.connection = None
+        self.pool = None
 
-    async def connect(self) -> None:
+    async def create_pool(self) -> None:
         """ Ініціалізація з'єднання з MySQL """
-        if self.connection is None:
-            self.connection = await aiomysql.connect(
+        if self.pool is None:
+            self.pool = await aiomysql.create_pool(
                 host=MYSQL_HOST,
                 port=3306,
                 user=MYSQL_USER,

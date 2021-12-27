@@ -15,4 +15,4 @@ storage = MemoryStorage()
 dp = Dispatcher(bot, storage=storage)
 
 db = Database()
-loop.run_until_complete(db.connect())
+loop.run_until_complete(db.create_pool())
