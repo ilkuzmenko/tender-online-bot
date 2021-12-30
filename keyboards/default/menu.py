@@ -1,21 +1,23 @@
 from aiogram.types import ReplyKeyboardMarkup, KeyboardButton
 
+from loader import _
+
 menu = ReplyKeyboardMarkup(
     keyboard=[
         [
-            KeyboardButton(text="🔎 Пошук"),
-            KeyboardButton(text="📎 Новини")
+            KeyboardButton(text=_("🔎 Пошук")),
+            KeyboardButton(text=_("📎 Новини"))
         ],
         [
-            KeyboardButton(text="🆘 FAQ"),
-            KeyboardButton(text="💰 Тарифи")
+            KeyboardButton(text=_("🆘 FAQ")),
+            KeyboardButton(text=_("💰 Тарифи"))
         ],
         [
-            KeyboardButton(text="⭐️ Написати керівнику"),
-            KeyboardButton(text="🔵 Про Prozorro")
+            KeyboardButton(text=_("⭐️ Написати керівнику")),
+            KeyboardButton(text=_("🔵 Про Prozorro"))
         ],
         [
-            KeyboardButton(text="🤝 Партнерські послуги")
+            KeyboardButton(text=_("🤝 Партнерські послуги"))
         ],
     ],
     resize_keyboard=True

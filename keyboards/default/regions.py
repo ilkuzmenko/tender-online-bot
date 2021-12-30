@@ -1,93 +1,95 @@
 from aiogram.types import ReplyKeyboardMarkup, KeyboardButton
 
+from loader import _
+
 regions = ReplyKeyboardMarkup(
     keyboard=[
         [
-            KeyboardButton(text="🔙 Головне меню")
+            KeyboardButton(text=_("🔙 Головне меню"))
         ],
         [
-            KeyboardButton(text="Вся Україна"),
+            KeyboardButton(text=_("Вся Україна")),
         ],
         [
-            KeyboardButton(text="м.Київ"),
+            KeyboardButton(text=_("м.Київ")),
         ],
         [
-            KeyboardButton(text="Автономна Республіка Крим"),
+            KeyboardButton(text=_("Автономна Республіка Крим")),
         ],
         [
-            KeyboardButton(text="Вінницька"),
+            KeyboardButton(text=_("Вінницька")),
         ],
         [
-            KeyboardButton(text="Волинська"),
+            KeyboardButton(text=_("Волинська")),
         ],
         [
-            KeyboardButton(text="Дніпропетровська"),
+            KeyboardButton(text=_("Дніпропетровська")),
         ],
         [
-            KeyboardButton(text="Донецька"),
+            KeyboardButton(text=_("Донецька")),
         ],
         [
-            KeyboardButton(text="Житомирська"),
+            KeyboardButton(text=_("Житомирська")),
         ],
         [
-            KeyboardButton(text="Закарпатська"),
+            KeyboardButton(text=_("Закарпатська")),
         ],
         [
-            KeyboardButton(text="Запорізька"),
+            KeyboardButton(text=_("Запорізька")),
         ],
         [
-            KeyboardButton(text="Івано-Франківська"),
+            KeyboardButton(text=_("Івано-Франківська")),
         ],
         [
-            KeyboardButton(text="Київська"),
+            KeyboardButton(text=_("Київська")),
         ],
         [
-            KeyboardButton(text="Кіровоградська"),
+            KeyboardButton(text=_("Кіровоградська")),
         ],
         [
-            KeyboardButton(text="Луганська"),
+            KeyboardButton(text=_("Луганська")),
         ],
         [
-            KeyboardButton(text="Львівська"),
+            KeyboardButton(text=_("Львівська")),
         ],
         [
-            KeyboardButton(text="Миколаївська"),
+            KeyboardButton(text=_("Миколаївська")),
         ],
         [
-            KeyboardButton(text="Одеська"),
+            KeyboardButton(text=_("Одеська")),
         ],
         [
-            KeyboardButton(text="Полтавська"),
+            KeyboardButton(text=_("Полтавська")),
         ],
         [
-            KeyboardButton(text="Рівненська"),
+            KeyboardButton(text=_("Рівненська")),
         ],
         [
-            KeyboardButton(text="Сумська"),
+            KeyboardButton(text=_("Сумська")),
         ],
         [
-            KeyboardButton(text="Тернопільська"),
+            KeyboardButton(text=_("Тернопільська")),
         ],
         [
-            KeyboardButton(text="Харківська"),
+            KeyboardButton(text=_("Харківська")),
         ],
         [
-            KeyboardButton(text="Херсонська"),
+            KeyboardButton(text=_("Херсонська")),
         ],
         [
-            KeyboardButton(text="Хмельницька"),
+            KeyboardButton(text=_("Хмельницька")),
         ],
         [
-            KeyboardButton(text="Черкаська"),
+            KeyboardButton(text=_("Черкаська")),
         ],
         [
-            KeyboardButton(text="Чернівецька"),
+            KeyboardButton(text=_("Чернівецька")),
         ],
         [
-            KeyboardButton(text="Чернігівська"),
+            KeyboardButton(text=_("Чернігівська")),
         ],
         [
-            KeyboardButton(text="м. Севастополь"),
+            KeyboardButton(text=_("м. Севастополь")),
         ],
     ],
     resize_keyboard=True

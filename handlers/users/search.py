@@ -6,7 +6,7 @@ from aiogram.dispatcher.filters.state import State, StatesGroup
 from aiogram.types import Message, ContentTypes, ReplyKeyboardRemove
 from utils.elastcsearch.es import search_request
 from keyboards.default import menu
-from loader import dp
+from loader import dp, _
 
 
 class SearchState(StatesGroup):
@@ -20,12 +20,12 @@ async def region_step(message: Message, state: FSMContext):
     async with state.proxy() as data:
         data['region'] = message.text
 
-    if data['region'] == "🔙 Головне меню":
+    if data['region'] == _("🔙 Головне меню"):
         await state.finish()
-        await message.answer("Виберіть, будь ласка, зі списку ⬇️", reply_markup=menu)
+        await message.answer(_("Оберіть, будь ласка, зі списку ⬇️"), reply_markup=menu)
         return
 
-    await message.answer("Напишіть пошуковий запит", reply_markup=ReplyKeyboardRemove())
+    await message.answer(_("Напишіть пошуковий запит"), reply_markup=ReplyKeyboardRemove())
     await SearchState.waiting_for_tender_request.set()
 
 
@@ -51,7 +51,7 @@ async def request_step(message: Message, state: FSMContext):
         await message.answer(tenders, parse_mode='HTML', disable_web_page_preview=True)
 
     await state.finish()
-    await message.answer("Оберіть зі списку", reply_markup=menu)
+    await message.answer(_("Оберіть, будь ласка, зі списку"), reply_markup=menu)
 
 
 async def get_tenders(user_message, region) -> Optional[str]:
@@ -60,7 +60,7 @@ async def get_tenders(user_message, region) -> Optional[str]:
     search_res = search_request(user_message, region)
 
     if search_res["hits"]["total"] == 0:
-        return "Нічого не знайшов 😔"
+        return _("Нічого не знайшов 😔")
 
     answer = ""
     for i in range(search_res["hits"]["total"]):
@@ -71,9 +71,9 @@ async def get_tenders(user_message, region) -> Optional[str]:
         amount = str(tender["_source"]["amount"])
         currency = tender["_source"]["currency"]
         link = "<a href = \"https://tender-online.com.ua/tender/view/" + str(tender["_id"]) + "\">«детальніше»</a>"
-        answer += f"<b>{i+1}. {title}" \
-                  f"</b>\nОчікування пропозиції\n" \
-                  f"<i>{amount}</i> {currency}\n" \
-                  f"<i>{publishedDate}</i>\n" \
-                  f"{link}\n\n"
+        answer += _(f"<b>{i+1}. {title}"
+                    "</b>\nОчікування пропозиції\n"
+                    f"<i>{amount}</i> {currency}\n"
+                    f"<i>{publishedDate}</i>\n"
+                    f"{link}\n\n")
     return answer

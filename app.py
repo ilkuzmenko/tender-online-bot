@@ -15,7 +15,7 @@ logging.basicConfig(format=u'%(filename)s [LINE:%(lineno)d] #%(levelname)-8s [%(
 async def on_startup(dp) -> None:
     asyncio.create_task(scheduler())
     await fill_news_table()
-    await message_to_admins("Bot /start")
+    await message_to_admins("I'm /start")
 
 
 if __name__ == '__main__':

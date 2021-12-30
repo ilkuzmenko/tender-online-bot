@@ -3,7 +3,7 @@ import os
 
 from datetime import datetime
 
-from loader import db
+from loader import db, _
 from utils.web_scrapper.NewsScrapper import fill_news_list
 
 logging.basicConfig(format=u'%(filename)s [LINE:%(lineno)d] #%(levelname)-8s [%(asctime)s]  %(message)s',
@@ -82,14 +82,14 @@ async def subscribe_user(user_id: int) -> str:
                     await cursor.execute(f"UPDATE users SET news = 1 WHERE user_id = {user_id}")
                     await cursor.close()
                     conn.close()
-                    return "✅ Ви успішно підписалися!"
+                    return _("✅ Ви успішно підписалися!")
                 else:
                     await cursor.execute(f"UPDATE users SET news = 0 WHERE user_id = {user_id}")
                     await cursor.close()
                     conn.close()
-                    return "❌ Ви успішно відпідписалися!"
+                    return _("❌ Ви успішно відпідписалися!")
     except TypeError:
-        return "❌ Схоже Ви не зареєстровані, виконайте команду /start та спробуйте ще!"
+        return _("❌ Схоже Ви не зареєстровані, виконайте команду /start та спробуйте ще!")
 
 
 async def get_new_news() -> str:
@@ -111,5 +111,5 @@ async def get_new_news() -> str:
     for news in news_table:
         if str(news[2]) == datetime.today().strftime('%Y-%m-%d'):
             logging.info("Find new post " + news[1])
-            return f"{news[0]}<a href = \"{news[1]}\"> " + " ➡️" + " </a>\n"
+            return _("{news[0]}<a href = \"{news[1]}\"> " + " ➡️" + " </a>\n")
     logging.info("No new posts found")

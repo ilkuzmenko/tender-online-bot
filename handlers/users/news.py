@@ -4,13 +4,13 @@ from aiogram.dispatcher.filters import Text
 from aiogram.types import Message, CallbackQuery
 
 from keyboards.inline import news_scroll
-from loader import dp
+from loader import dp, _
 from utils.mydb.comands import subscribe_user, get_news_sorted
 
 user_data = {}
 
 
-@dp.message_handler(Text(equals=["📩 Отримати новини"]))
+@dp.message_handler(Text(equals=[_("📩 Отримати новини")]))
 async def get_news_btn(message: Message):
     """ Sends the user the first page of news """
     first_news_page = await get_news(page=0)
@@ -34,7 +34,7 @@ async def change_news(call: CallbackQuery, page=0):
             disable_web_page_preview=True)
         return
     await call.answer(
-        text="Думаю, там нічого нема 🧐",
+        text=_("Думаю, там нічого нема 🧐"),
         show_alert=True)
     user_data[call.from_user.id] = 0
 
@@ -53,7 +53,7 @@ async def callbacks_num(call: CallbackQuery):
     await call.answer()
 
 
-@dp.message_handler(Text(equals=["✅ Підписатися/❌ Відписатися"]))
+@dp.message_handler(Text(equals=[_("✅ Підписатися/❌ Відписатися")]))
 async def btn_subscribe(message: Message):
     """ Notifies the user of the subscription status """
     await message.answer(
@@ -69,8 +69,6 @@ async def get_news(page: int):
     if not news_tuple:
         return None
 
-    out = '<b>📩 Новини:</b>\n\n'
-
     if page == 0:
         first_elem = 0
         last_elem = 5
@@ -81,12 +79,13 @@ async def get_news(page: int):
     else:
         return
 
+    out = _("<b>📩 Новини:</b>\n\n")
     for i, news_dict in enumerate(news_tuple[first_elem:last_elem]):
         page_num = i + 1 + (page * 5)
         title = news_dict[1]
         date_post = str(news_dict[3])
-        link = f"<a href = \"{news_dict[2]}\"> «детальніше»</a>"
+        link = _(f"<a href = \"{news_dict[2]}\"> «детальніше»</a>")
 
-        out += f"<b>{page_num}. {title}\n</b><i>{date_post}</i>\n{link}\n\n"
+        out += _(f"<b>{page_num}. {title}\n</b><i>{date_post}</i>\n{link}\n\n")
 
     return out

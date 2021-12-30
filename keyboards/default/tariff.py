@@ -1,13 +1,15 @@
 from aiogram.types import ReplyKeyboardMarkup, KeyboardButton
 
+from loader import _
+
 tariff = ReplyKeyboardMarkup(
     keyboard=[
         [
-            KeyboardButton(text="🔙 Головне меню")
+            KeyboardButton(text=_("🔙 Головне меню"))
         ],
         [
-            KeyboardButton(text="🔵 Prozorro"),
-            KeyboardButton(text="🟢 Prozorro Market")
+            KeyboardButton(text=_("🔵 Prozorro")),
+            KeyboardButton(text=_("🟢 Prozorro Market"))
         ],
     ],
     resize_keyboard=True
