@@ -84,8 +84,8 @@ async def get_news(page: int):
         page_num = i + 1 + (page * 5)
         title = news_dict[1]
         date_post = str(news_dict[3])
-        link = _(f"<a href = \"{news_dict[2]}\"> «детальніше»</a>")
+        link = f"<a href = \"{news_dict[2]}\"> «детальніше»</a>"
 
-        out += _(f"<b>{page_num}. {title}\n</b><i>{date_post}</i>\n{link}\n\n")
+        out += f"<b>{page_num}. {title}\n</b><i>{date_post}</i>\n{link}\n\n"
 
     return out

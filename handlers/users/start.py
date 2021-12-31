@@ -12,8 +12,7 @@ from utils.mydb.comands import add_user, subscription_status
 async def phone(message: Message):
     if not bool(await subscription_status(user_id=message.from_user.id)):
         await message.answer(_(
-            f"Привіт {message.from_user.first_name}, "
-            "залишився один крок, "
+            "Привіт, залишився один крок, "
             "поділіться Вашими контактними даними, "
             "щоб почати користуватися ботом."),
             reply_markup=share_contact

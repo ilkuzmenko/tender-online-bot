@@ -71,9 +71,9 @@ async def get_tenders(user_message, region) -> Optional[str]:
         amount = str(tender["_source"]["amount"])
         currency = tender["_source"]["currency"]
         link = "<a href = \"https://tender-online.com.ua/tender/view/" + str(tender["_id"]) + "\">«детальніше»</a>"
-        answer += _(f"<b>{i+1}. {title}"
-                    "</b>\nОчікування пропозиції\n"
-                    f"<i>{amount}</i> {currency}\n"
-                    f"<i>{publishedDate}</i>\n"
-                    f"{link}\n\n")
+        answer += f"<b>{i+1}. {title}"\
+                  "</b>\nОчікування пропозиції\n"\
+                  f"<i>{amount}</i> {currency}\n"\
+                  f"<i>{publishedDate}</i>\n"\
+                  f"{link}\n\n"
     return answer
